@@ -1,0 +1,75 @@
+CREATE DATABASE CollegeDB;
+USE CollegeDB;
+
+CREATE TABLE Students (
+    StudentName VARCHAR(50),
+    Subject VARCHAR(20),
+    Mark INT
+);
+
+INSERT INTO Students VALUES
+('Arun', 'Tamil', 85),
+('Arun', 'English', 78),
+('Arun', 'Maths', 90),
+('Bala', 'Tamil', 75),
+('Bala', 'English', 88),
+('Bala', 'Maths', 80),
+('Kumar', 'Science', 92);
+
+SELECT StudentName, Subject, Mark
+FROM Students
+WHERE Subject IN (
+    SELECT Subject
+    FROM Students
+    WHERE Subject IN ('Tamil', 'English', 'Maths')
+);
+
+CREATE DATABASE CompanyDB;
+USE CompanyDB;
+
+-- Create Manager Details table
+CREATE TABLE Manager_Details (
+    Manager_ID INT PRIMARY KEY,
+    ManagerName VARCHAR(50) NOT NULL,
+    Dep VARCHAR(30)
+);
+
+-- Create Employee Details table
+CREATE TABLE Employee_Details (
+    Empid INT PRIMARY KEY,
+    EmpName VARCHAR(50) NOT NULL,
+    Dep VARCHAR(30),
+    Manager_ID INT,
+    FOREIGN KEY (Manager_ID)
+        REFERENCES Manager_Details(Manager_ID)
+);
+
+-- Insert values into Manager table
+INSERT INTO Manager_Details VALUES
+(101, 'Ravi', 'IT'),
+(102, 'Priya', 'HR'),
+(103, 'Karthik', 'Sales');
+
+-- Insert values into Employee table
+INSERT INTO Employee_Details VALUES
+(1, 'Arun', 'IT', 101),
+(2, 'Bala', 'IT', 101),
+(3, 'Divya', 'HR', 102),
+(4, 'Kumar', 'Sales', 103);
+
+-- Display Manager Details
+SELECT * FROM Manager_Details;
+
+-- Display Employee Details
+SELECT * FROM Employee_Details;
+
+-- Display employees with their manager names
+SELECT
+    E.Empid,
+    E.EmpName,
+    E.Dep,
+    E.Manager_ID,
+    M.ManagerName
+FROM Employee_Details E
+JOIN Manager_Details M
+ON E.Manager_ID = M.Manager_ID;
